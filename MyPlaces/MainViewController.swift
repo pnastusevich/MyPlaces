@@ -8,9 +8,14 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UITableViewController {
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var reversedSortingButton: UIBarButtonItem!
     
     var places: Results<Place>! // автообновляемый тип контейнера, который возращает объекты по запросу. Аналог массива
+    var ascedingSorting = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +32,12 @@ class MainViewController: UITableViewController {
 //        return 0
 //    }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // возр. колич ячеек
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // возр. колич ячеек
         return places.isEmpty ? 0 : places.count // если объект не пустой, то возращаем каунт контейнера
     }
 
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { // конфиг. ячейки
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { // конфиг. ячейки
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
         
         let place = places[indexPath.row]
@@ -61,7 +66,7 @@ class MainViewController: UITableViewController {
 //        return UISwipeActionsConfiguration(actions: [deleteAction])
 //    }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { // аналог метода выше, только предназначен для мегьшего количства действий
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) { // аналог метода выше, только предназначен для мегьшего количства действий
         
         if editingStyle == .delete {
             let place = places[indexPath.row]
@@ -89,6 +94,34 @@ class MainViewController: UITableViewController {
         guard let newPlaceViewControler = segue.source as? NewPlaceViewController else { return }
         
         newPlaceViewControler.savePlace()
+        tableView.reloadData()
+    }
+    
+    @IBAction func sortSelection(_ sender: UISegmentedControl) {
+        
+       sorting()
+    }
+    
+    @IBAction func revesedSorting(_ sender: Any) {
+        ascedingSorting.toggle() // меняет значение на противоположное
+        
+        if ascedingSorting { // если ascedingSorting == true, то меняем имдж
+            reversedSortingButton.image = UIImage(imageLiteralResourceName: "ZA")
+        } else {
+            reversedSortingButton.image = UIImage(imageLiteralResourceName: "AZ")
+        }
+        
+        sorting()
+    }
+    
+    private func sorting() {
+        
+        if segmentedControl.selectedSegmentIndex == 0 { // если выбран правый, то сортируем по дате, если же левый то по имени
+            places = places.sorted(byKeyPath: "date", ascending: ascedingSorting)
+        } else {
+            places = places.sorted(byKeyPath: "name", ascending: ascedingSorting)
+        }
+        
         tableView.reloadData()
     }
 

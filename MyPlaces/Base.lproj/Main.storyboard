@@ -159,6 +159,32 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="140" id="eY3-9t-Ssz">
+                                        <rect key="frame" x="0.0" y="525" width="393" height="140"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eY3-9t-Ssz" id="U4o-m9-5nO">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="140"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="110" placeholderIntrinsicHeight="110" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uPC-Dm-HT5" customClass="RatingControl" customModule="MyPlaces" customModuleProvider="target">
+                                                    <rect key="frame" x="70.666666666666686" y="15" width="252" height="110"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starCount">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="size" keyPath="starSize">
+                                                            <size key="value" width="44" height="44"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="uPC-Dm-HT5" firstAttribute="centerX" secondItem="U4o-m9-5nO" secondAttribute="centerX" id="J3F-Rh-NmI"/>
+                                                <constraint firstItem="uPC-Dm-HT5" firstAttribute="top" secondItem="U4o-m9-5nO" secondAttribute="topMargin" constant="4" id="S9f-ey-Urg"/>
+                                                <constraint firstItem="uPC-Dm-HT5" firstAttribute="centerY" secondItem="U4o-m9-5nO" secondAttribute="centerY" id="hav-0M-NZD"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -184,6 +210,7 @@
                         <outlet property="placeLocation" destination="g3l-JX-klx" id="y35-1o-sEe"/>
                         <outlet property="placeName" destination="ckG-Wk-VDe" id="Vz0-oQ-Vva"/>
                         <outlet property="placeType" destination="GG0-mD-Lep" id="BAA-Fn-QOp"/>
+                        <outlet property="ratingControl" destination="uPC-Dm-HT5" id="eIY-g8-LU8"/>
                         <outlet property="saveButton" destination="JSM-po-1mT" id="ZV8-Ke-39C"/>
                     </connections>
                 </tableViewController>
@@ -281,8 +308,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="iBJ-f7-avL" firstAttribute="leading" secondItem="kcR-4s-8pJ" secondAttribute="leading" id="1cw-VF-h3F"/>
-                            <constraint firstItem="ghh-f0-psh" firstAttribute="top" secondItem="iBJ-f7-avL" secondAttribute="bottom" constant="1" id="3ws-ZH-fmd"/>
                             <constraint firstItem="iBJ-f7-avL" firstAttribute="top" secondItem="kcR-4s-8pJ" secondAttribute="top" id="NOT-l2-BJ5"/>
+                            <constraint firstItem="ghh-f0-psh" firstAttribute="top" secondItem="iBJ-f7-avL" secondAttribute="bottom" constant="1" id="qMa-Jx-umH"/>
                             <constraint firstItem="iBJ-f7-avL" firstAttribute="trailing" secondItem="kcR-4s-8pJ" secondAttribute="trailing" id="qST-UW-6eQ"/>
                         </constraints>
                     </view>
@@ -351,6 +378,11 @@
             <point key="canvasLocation" x="1902" y="-987"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="uPC-Dm-HT5">
+            <size key="intrinsicContentSize" width="110" height="110"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="MTP-Nl-6R3"/>
     </inferredMetricsTieBreakers>

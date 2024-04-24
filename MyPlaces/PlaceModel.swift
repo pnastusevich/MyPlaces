@@ -14,13 +14,15 @@ class Place: Object { // Модель данных для хранения ме�
     @objc dynamic var type: String?
     @objc dynamic var imageData: Data?
     @objc dynamic var date = Date()
+    @objc dynamic var rating = 0.0
     
-    convenience init(name: String, location: String?, type: String?, imageData: Data?) { // convenience означает, что это назначеный инициалитатор, нужен чтобы инициализировать всех свойства
+    convenience init(name: String, location: String?, type: String?, imageData: Data?, rating: Double) { // convenience означает, что это назначеный инициалитатор, нужен чтобы инициализировать всех свойства
         self.init() // инициилизирует все св-ва по умолчанию
         self.name = name
         self.location = location
         self.type = type
         self.imageData = imageData
+        self.rating = rating
     }
 
 }

@@ -10,17 +10,35 @@ import RealmSwift
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    private let searchController = UISearchController(searchResultsController: nil) // с помощью nil говорим что хотим использовать тот же вью для отображение, где и находиться поиск
+    
+    private var places: Results<Place>! // автообновляемый тип контейнера, который возращает объекты по запросу. Аналог массива
+    private var filtredPlaces: Results<Place>! // колекция для фильтрации при работе с поиковиком (сюда будут помещаться значения)
+    private var ascedingSorting = true
+    private var searchBarIsEmpty: Bool { // если в поисковике есть текс, то возвращает true, если нет, то false
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isFiltering: Bool { // возвращает true кгода поисковая строка активирована
+        return searchController.isActive && !searchBarIsEmpty
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var reversedSortingButton: UIBarButtonItem!
-    
-    var places: Results<Place>! // автообновляемый тип контейнера, который возращает объекты по запросу. Аналог массива
-    var ascedingSorting = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         places = realm.objects(Place.self) // self пишем потому что подразумеваем что подставляем ТИП данных place. Вызываем 
+        
+            // настройка searchController
+        searchController.searchResultsUpdater = self // говорим что получаетелем инфы об изменении текста в поисковой строке должен быть сам класс
+        searchController.obscuresBackgroundDuringPresentation = false // отключаем и теперь можем взаимодействовать с вью контроллером как основным (смотреть, изменять, удалять записи)
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController // поисковик будет ингегрирован в navigationBar
+        definesPresentationContext = true // отпускаем строку поиска при переходе на другой экран
+        
     }
     
     
@@ -33,6 +51,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 //    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { // возр. колич ячеек
+        if isFiltering {
+            return filtredPlaces.count // если поисковая строка активна, то возращаем количество отсортированных элементов
+        }
+        
         return places.isEmpty ? 0 : places.count // если объект не пустой, то возращаем каунт контейнера
     }
 
@@ -40,7 +62,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { // конфиг. ячейки
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
         
-        let place = places[indexPath.row]
+        var place = Place()
+        
+        if isFiltering { // если поисковая строка активна, то свойству place присваиваем язначения из осортирован массива
+            place = filtredPlaces[indexPath.row]
+        } else {
+            place = places[indexPath.row]
+        }
+    
         
         cell.nameLabel?.text = place.name // обращ. к объкту из массива places и далее к его св-ву
         cell.locationLabel.text = place.location
@@ -54,6 +83,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     //MARK: Table view delegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 //    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? { // метод настравивает пользоваельские действия свайпом с права на лево
 //        
 //        let place = places[indexPath.row]
@@ -82,8 +116,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return } // indexPathForSelectedRow - индекс строки по которой идёт тап
-            let place = places[indexPath.row]
             
+            let place: Place
+            if isFiltering {
+                place = filtredPlaces[indexPath.row]
+            } else {
+                place = places[indexPath.row]
+            }
             let newPlaceViewController = segue.destination as! NewPlaceViewController
             newPlaceViewController.currentPlace = place // передали объект из выбранной ячейки на экран NewPlaceVC   
         }
@@ -125,4 +164,17 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.reloadData()
     }
 
+}
+
+extension MainViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    private func filterContentForSearchText(_ searchText: String) {
+        
+        filtredPlaces = places.filter("name CONTAINS[c] %@ OR location CONTAINS[c] %@", searchText, searchText) // выполняем поиск по полям name и location и фильтруем данные по значению из параметра searchText в не зависимости от регистра символов (а А)
+        
+        tableView.reloadData()
+    }
 }

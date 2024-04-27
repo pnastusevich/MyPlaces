@@ -71,15 +71,20 @@ class NewPlaceViewController: UITableViewController {
         }
     }
     
+// MARK: NAvigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier != "showMap" { return }
+        let mapViewController = segue.destination as! MapViewController // создаём экземпляр класса MapViewController
+        mapViewController.place.name = placeName.text!
+        mapViewController.place.location = placeLocation.text!
+        mapViewController.place.type = placeType.text!
+        mapViewController.place.imageData = placeImage.image?.pngData()
+    }
+    
     func savePlace() {
-        var image: UIImage?
-        
-        if imageIsChanged {
-            image = placeImage.image
-        } else {
-            image = UIImage(named: "imagePlaceholder")
-        }
-
+       
+        let image = imageIsChanged ? placeImage.image : UIImage(named: "imagePlaceholder")
         let imageData = image?.pngData()
         
         let newPlace = Place(name: placeName.text!,
@@ -95,6 +100,7 @@ class NewPlaceViewController: UITableViewController {
                 currentPlace?.type = newPlace.type
                 currentPlace?.imageData = newPlace.imageData
                 currentPlace?.rating = newPlace.rating
+                
             }
         } else {
                 StorageManager.saveObject(newPlace)
@@ -115,7 +121,6 @@ class NewPlaceViewController: UITableViewController {
             placeLocation.text = currentPlace?.location
             placeType.text = currentPlace?.type
             ratingControl.rating = Int(currentPlace.rating)
-            
         }
     }
     

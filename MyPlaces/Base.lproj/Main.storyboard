@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,11 +31,26 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photo" translatesAutoresizingMaskIntoConstraints="NO" id="SP9-4g-KMO">
                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxR-t9-uhj">
+                                                    <rect key="frame" x="313" y="170" width="75" height="75"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="VY5-2b-tP6"/>
+                                                        <constraint firstAttribute="height" constant="75" id="xnQ-61-4wg"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" image="map"/>
+                                                    <connections>
+                                                        <segue destination="zeR-ye-yaS" kind="presentation" identifier="showMap" id="5bN-6l-7PQ"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="oxR-t9-uhj" secondAttribute="bottom" constant="5" id="7bb-Bp-j3J"/>
                                                 <constraint firstAttribute="bottom" secondItem="SP9-4g-KMO" secondAttribute="bottom" id="CJg-cs-1fW"/>
                                                 <constraint firstItem="SP9-4g-KMO" firstAttribute="top" secondItem="CoJ-1f-dP4" secondAttribute="top" id="WYe-Lt-lpf"/>
+                                                <constraint firstItem="oxR-t9-uhj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CoJ-1f-dP4" secondAttribute="leading" constant="20" symbolic="YES" id="bzi-sh-bW4"/>
+                                                <constraint firstAttribute="trailing" secondItem="oxR-t9-uhj" secondAttribute="trailing" constant="5" id="c52-1K-c4Y"/>
                                                 <constraint firstAttribute="trailing" secondItem="SP9-4g-KMO" secondAttribute="trailing" id="edL-xl-9YP"/>
                                                 <constraint firstItem="SP9-4g-KMO" firstAttribute="leading" secondItem="CoJ-1f-dP4" secondAttribute="leading" id="lmW-Ny-0uz"/>
                                             </constraints>
@@ -166,8 +182,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="110" placeholderIntrinsicHeight="110" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uPC-Dm-HT5" customClass="RatingControl" customModule="MyPlaces" customModuleProvider="target">
-                                                    <rect key="frame" x="70.666666666666686" y="15" width="252" height="110"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="110" placeholderIntrinsicHeight="110" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uPC-Dm-HT5" customClass="RatingControl" customModule="MyPlaces" customModuleProvider="target">
+                                                    <rect key="frame" x="141.66666666666666" y="15" width="110" height="110"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="starCount">
                                                             <integer key="value" value="5"/>
@@ -217,7 +233,65 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YSF-gU-0GY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="uIZ-KE-7q0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1902" y="-265"/>
+            <point key="canvasLocation" x="1901.5267175572519" y="-265.49295774647891"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="NIK-2K-WcG">
+            <objects>
+                <viewController id="zeR-ye-yaS" customClass="MapViewController" customModule="MyPlaces" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="o05-KJ-ww6">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqo-b1-PM7">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                                <standardMapConfiguration key="preferredConfiguration"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E1H-6R-Ahz">
+                                <rect key="frame" x="323" y="40" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="MTG-ZN-wTw"/>
+                                    <constraint firstAttribute="height" constant="30" id="qS0-OB-pQp"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="camcel"/>
+                                <connections>
+                                    <action selector="closeViewController" destination="zeR-ye-yaS" eventType="touchUpInside" id="Bqy-su-qgb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uAa-hw-ua6">
+                                <rect key="frame" x="318" y="757" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="7vM-O9-ooB"/>
+                                    <constraint firstAttribute="height" constant="40" id="Xbj-N6-g0c"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Location"/>
+                                <connections>
+                                    <action selector="centerViewInUserLocation" destination="zeR-ye-yaS" eventType="touchUpInside" id="l8v-dK-iqP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="uBH-2b-89f"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uBH-2b-89f" firstAttribute="trailing" secondItem="E1H-6R-Ahz" secondAttribute="trailing" constant="40" id="Bvc-V9-HlE"/>
+                            <constraint firstItem="E1H-6R-Ahz" firstAttribute="top" secondItem="uBH-2b-89f" secondAttribute="top" constant="40" id="NZd-Du-hWs"/>
+                            <constraint firstItem="fqo-b1-PM7" firstAttribute="top" secondItem="o05-KJ-ww6" secondAttribute="top" id="WTl-Jh-xPo"/>
+                            <constraint firstAttribute="bottom" secondItem="fqo-b1-PM7" secondAttribute="bottom" id="b4R-9Y-CJr"/>
+                            <constraint firstItem="uBH-2b-89f" firstAttribute="trailing" secondItem="uAa-hw-ua6" secondAttribute="trailing" constant="35" id="dya-0x-qBY"/>
+                            <constraint firstItem="fqo-b1-PM7" firstAttribute="trailing" secondItem="uBH-2b-89f" secondAttribute="trailing" id="eSG-xY-16H"/>
+                            <constraint firstItem="uBH-2b-89f" firstAttribute="bottom" secondItem="uAa-hw-ua6" secondAttribute="bottom" constant="45" id="iwq-rx-Y7U"/>
+                            <constraint firstItem="fqo-b1-PM7" firstAttribute="leading" secondItem="uBH-2b-89f" secondAttribute="leading" id="oN1-mz-qs7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="fqo-b1-PM7" id="SDM-DP-s4i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9XP-Gh-9Qj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2799.2366412213742" y="-265.49295774647891"/>
         </scene>
         <!--My Places-->
         <scene sceneID="btz-xY-gV9">
@@ -247,39 +321,57 @@
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="wUN-cs-BZt">
-                                                    <rect key="frame" x="96" y="8" width="281" height="69"/>
+                                                    <rect key="frame" x="96" y="8" width="187" height="69"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NjH-9y-4wG">
-                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="24.333333333333332"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="187" height="24.333333333333332"/>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="18"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0d3-xS-752">
-                                                            <rect key="frame" x="0.0" y="27.333333333333336" width="281" height="20.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="27.333333333333336" width="187" height="20.333333333333336"/>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OCs-oq-kVw">
-                                                            <rect key="frame" x="0.0" y="50.666666666666664" width="281" height="18.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="50.666666666666664" width="187" height="18.333333333333336"/>
                                                             <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="13"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="90" placeholderIntrinsicHeight="15" translatesAutoresizingMaskIntoConstraints="NO" id="LLc-Db-uno" customClass="CosmosView" customModule="Cosmos">
+                                                    <rect key="frame" x="291" y="35" width="90" height="15"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="eFh-nZ-LYo"/>
+                                                        <constraint firstAttribute="width" constant="90" id="xT1-Dv-X44"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                                            <real key="value" value="14"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="filledStar"/>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="emptyStar"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="wUN-cs-BZt" secondAttribute="trailing" constant="16" id="8Ht-F6-sxZ"/>
                                                 <constraint firstAttribute="bottom" secondItem="wUN-cs-BZt" secondAttribute="bottom" constant="8" id="FKc-Tp-saf"/>
                                                 <constraint firstItem="wUN-cs-BZt" firstAttribute="leading" secondItem="NMi-2g-73K" secondAttribute="trailing" constant="16" id="SQL-wz-fyp"/>
                                                 <constraint firstItem="wUN-cs-BZt" firstAttribute="top" secondItem="X6f-VB-XwV" secondAttribute="top" constant="8" id="VNB-j5-DbK"/>
+                                                <constraint firstItem="LLc-Db-uno" firstAttribute="centerY" secondItem="X6f-VB-XwV" secondAttribute="centerY" id="aHz-lw-Gbu"/>
                                                 <constraint firstItem="NMi-2g-73K" firstAttribute="centerY" secondItem="X6f-VB-XwV" secondAttribute="centerY" id="c3M-Q7-yEA"/>
                                                 <constraint firstItem="NMi-2g-73K" firstAttribute="leading" secondItem="X6f-VB-XwV" secondAttribute="leading" constant="15" id="fiH-6z-WZw"/>
+                                                <constraint firstItem="LLc-Db-uno" firstAttribute="trailing" secondItem="X6f-VB-XwV" secondAttribute="trailingMargin" constant="8" id="gcH-fa-4X9"/>
+                                                <constraint firstItem="LLc-Db-uno" firstAttribute="leading" secondItem="wUN-cs-BZt" secondAttribute="trailing" constant="8" id="vty-2Y-RY8"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="cosmosView" destination="LLc-Db-uno" id="xx4-tq-TJy"/>
                                             <outlet property="imageOfPlace" destination="NMi-2g-73K" id="wvZ-6Y-pLv"/>
                                             <outlet property="locationLabel" destination="0d3-xS-752" id="HrF-R7-y9f"/>
                                             <outlet property="nameLabel" destination="NjH-9y-4wG" id="fA5-9R-hlt"/>
@@ -325,6 +417,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <size key="freeformSize" width="393" height="852"/>
                     <connections>
                         <outlet property="reversedSortingButton" destination="935-7f-ssP" id="MSz-j8-ztV"/>
                         <outlet property="segmentedControl" destination="iBJ-f7-avL" id="hhe-u9-JdQ"/>
@@ -379,6 +472,9 @@
         </scene>
     </scenes>
     <designables>
+        <designable name="LLc-Db-uno">
+            <size key="intrinsicContentSize" width="90" height="15"/>
+        </designable>
         <designable name="uPC-Dm-HT5">
             <size key="intrinsicContentSize" width="110" height="110"/>
         </designable>
@@ -388,7 +484,12 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AZ" width="25" height="24"/>
+        <image name="Location" width="128" height="128"/>
         <image name="Photo" width="194.66667175292969" height="195.66667175292969"/>
+        <image name="camcel" width="128" height="128"/>
+        <image name="emptyStar" width="255" height="256"/>
+        <image name="filledStar" width="237.5" height="238"/>
+        <image name="map" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

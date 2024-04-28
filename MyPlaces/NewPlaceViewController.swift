@@ -32,6 +32,10 @@ class NewPlaceViewController: UITableViewController {
         setupEditScreen()
     }
     
+    @IBAction func cancelAction(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    
     
     // MARK: Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { // реализую добавление фото через алёрт контроллер, если тап идёт по превой ячейке
@@ -74,12 +78,21 @@ class NewPlaceViewController: UITableViewController {
 // MARK: NAvigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier != "showMap" { return }
-        let mapViewController = segue.destination as! MapViewController // создаём экземпляр класса MapViewController
-        mapViewController.place.name = placeName.text!
-        mapViewController.place.location = placeLocation.text!
-        mapViewController.place.type = placeType.text!
-        mapViewController.place.imageData = placeImage.image?.pngData()
+        
+        guard
+            let identifier = segue.identifier,
+            let mapVC = segue.destination as? MapViewController // создаём экземпляр класса MapViewController
+            else { return }
+        
+        mapVC.incomeSegueIdentifier = identifier
+        mapVC.mapViewControllerDelegate = self // назначил делегата протокола сам класс
+        
+        if identifier == "showPlace" {
+            mapVC.place.name = placeName.text!
+            mapVC.place.location = placeLocation.text!
+            mapVC.place.type = placeType.text!
+            mapVC.place.imageData = placeImage.image?.pngData()
+        }
     }
     
     func savePlace() {
@@ -135,12 +148,10 @@ class NewPlaceViewController: UITableViewController {
         
     }
     
-    @IBAction func cancelAction(_ sender: Any) {
-        dismiss(animated: true)
-    }
+   
 }
 
-// MARK: Text field delegate
+// MARK: Extension Text field delegate
 
 extension NewPlaceViewController: UITextFieldDelegate {
     
@@ -161,7 +172,7 @@ extension NewPlaceViewController: UITextFieldDelegate {
     }
 }
 
-//MARK: Work with image
+//MARK: Extension Work with image
 extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
@@ -185,5 +196,13 @@ extension NewPlaceViewController: UIImagePickerControllerDelegate, UINavigationC
         
         dismiss(animated: true)
 
+    }
+}
+
+// MARK: Extension MapViewControllerDelegate
+extension NewPlaceViewController: MapViewControllerDelegate {
+    
+    func getAddress(_ address: String?) {
+        placeLocation.text = address
     }
 }

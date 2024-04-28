@@ -10,6 +10,8 @@ import RealmSwift
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    //MARK: Properties
+    
     private let searchController = UISearchController(searchResultsController: nil) // с помощью nil говорим что хотим использовать тот же вью для отображение, где и находиться поиск
     
     private var places: Results<Place>! // автообновляемый тип контейнера, который возращает объекты по запросу. Аналог массива
@@ -23,9 +25,13 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         return searchController.isActive && !searchBarIsEmpty
     }
     
+    //MARK: @IBOutlet Properties
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var reversedSortingButton: UIBarButtonItem!
+    
+    //MARK: viewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,9 +47,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    
-    
-
     // MARK: - Table view data source
 
 //    override func numberOfSections(in tableView: UITableView) -> Int { // возвращает количество секций. изначально 1
@@ -151,6 +154,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
 }
+
+// MARK: EXTENSION UISearchResultsUpdating
 
 extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
